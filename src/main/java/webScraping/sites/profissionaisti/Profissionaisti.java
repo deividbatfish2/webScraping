@@ -20,9 +20,9 @@ public class Profissionaisti implements ISite {
 	}
 
 	@Override
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		try {
-			navegador.get("https://empregos.profissionaisti.com.br/?s=teste");
+			navegador.get("https://empregos.profissionaisti.com.br/?s=" + vagaDeInteresse);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,13 +37,39 @@ public class Profissionaisti implements ISite {
 					.forEach(div -> listaDeLinks.add(div.findElement(By.tagName("a")).getAttribute("href")));// search
 																												// result
 																												// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeDescricao = new ArrayList<>();
+
+		try {
+			navegador.findElements(By.cssSelector("li[id^=\"vaga\"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+			return listaDeDescricao;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "Profissionais TI";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
 	}
 
 }

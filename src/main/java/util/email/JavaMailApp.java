@@ -32,11 +32,11 @@ public class JavaMailApp {
 		this.mensagem += mensagem + "\n";
 	}
 
-	public void enviarEmail() {
+	public void enviarEmail(String emails) {
 
 		Session session = Session.getDefaultInstance(this.props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("deivid.de.assis.teixeira@gmail.com", "xxxxxxx");
+				return new PasswordAuthentication("deivid.de.assis.teixeira@gmail.com", "");
 			}
 		});
 
@@ -48,7 +48,7 @@ public class JavaMailApp {
 			message.setFrom(new InternetAddress("deivid.de.assis.teixeira@gmail.com")); // Remetente
 
 			Address[] toUser = InternetAddress // Destinatário(s)
-					.parse("deividbatfish2@gmail.com");
+					.parse(emails);
 			message.setRecipients(Message.RecipientType.TO, toUser);
 			message.setSubject("Vagas coletadas");// Assunto
 			message.setText(this.mensagem);

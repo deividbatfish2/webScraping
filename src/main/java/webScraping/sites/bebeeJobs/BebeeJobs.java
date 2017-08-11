@@ -21,9 +21,9 @@ public class BebeeJobs implements ISite {
 	}
 
 	@Override
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		try {
-			navegador.get("https://br.bebee.com/jobs/search?q=teste");
+			navegador.get("https://br.bebee.com/jobs/search?q=" + vagaDeInteresse);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,13 +40,40 @@ public class BebeeJobs implements ISite {
 					.forEach(li -> listaDeLinks.add(li.findElement(By.tagName("a")).getAttribute("href")));// search
 																											// result
 																											// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeDescricao = new ArrayList<>();
+		try {
+			aguarde.until(ExpectedConditions.visibilityOf(navegador.findElement(By.className("job_list_results"))));
+
+			navegador.findElement(By.className("job_list_results")).findElements(By.tagName("li"))
+					.forEach(li -> listaDeDescricao.add(li.findElement(By.tagName("a")).getText()));// search
+																									// result
+																									// links
+			return listaDeDescricao;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "Bebee Jobs";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
 	}
 
 }

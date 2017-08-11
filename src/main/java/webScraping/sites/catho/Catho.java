@@ -19,9 +19,9 @@ public class Catho implements ISite {
 	}
 
 	@Override
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		navegador.get("https://www.catho.com.br/");
-		navegador.findElement(By.id("cargoDesejado")).sendKeys("Teste");
+		navegador.findElement(By.id("cargoDesejado")).sendKeys(vagaDeInteresse);
 		navegador.findElement(By.cssSelector("input[value=\"buscar\"]")).click();
 	}
 
@@ -34,13 +34,40 @@ public class Catho implements ISite {
 					.forEach(li -> listaDeLinks.add(li.findElement(By.tagName("a")).getAttribute("href")));// search
 																											// result
 																											// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeLinks = new ArrayList<>();
+		try {
+
+			navegador.findElement(By.id("listagemVagas")).findElements(By.tagName("li"))
+					.forEach(li -> listaDeLinks.add(li.findElement(By.tagName("a")).getText()));// search
+																								// result
+																								// links
+			return listaDeLinks;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "Catho";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
+
 	}
 
 }

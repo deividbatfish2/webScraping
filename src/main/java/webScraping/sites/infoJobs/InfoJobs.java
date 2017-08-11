@@ -19,9 +19,9 @@ public class InfoJobs implements ISite {
 		this.aguarde = aguarde;
 	}
 
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		try {
-			navegador.get("https://www.infojobs.com.br/empregos.aspx?Palabra=teste");
+			navegador.get("https://www.infojobs.com.br/empregos.aspx?Palabra=" + vagaDeInteresse);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,13 +35,39 @@ public class InfoJobs implements ISite {
 					.forEach(div -> listaDeLinks.add(div.findElement(By.tagName("a")).getAttribute("href")));// search
 																												// result
 																												// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeDescricao = new ArrayList<>();
+
+		try {
+			navegador.findElements(By.cssSelector("div[class=\"vaga \"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+			return listaDeDescricao;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "InfoJobs";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
 	}
 
 }

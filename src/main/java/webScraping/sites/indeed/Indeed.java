@@ -20,10 +20,10 @@ public class Indeed implements ISite {
 	}
 
 	@Override
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		try {
 			navegador.get("https://www.indeed.com.br/");
-			navegador.findElement(By.name("q")).sendKeys("Teste");
+			navegador.findElement(By.name("q")).sendKeys(vagaDeInteresse);
 			navegador.findElement(By.name("l")).clear();
 			navegador.findElement(By.id("fj")).click();
 		} catch (Exception e) {
@@ -49,13 +49,48 @@ public class Indeed implements ISite {
 					.forEach(div -> listaDeLinks.add(div.findElement(By.tagName("a")).getAttribute("href")));// search
 																												// result
 																												// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeDescricao = new ArrayList<>();
+
+		try {
+			navegador.findElements(By.cssSelector("div[class=\"row  result\"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+
+			navegador.findElements(By.cssSelector("div[class=\"  row  result\"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+			navegador.findElements(By.cssSelector("div[class=\"row  result\"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+			return listaDeDescricao;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "Indeed";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
 	}
 
 }

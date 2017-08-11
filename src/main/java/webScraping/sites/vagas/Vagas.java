@@ -21,10 +21,10 @@ public class Vagas implements ISite {
 	}
 
 	@Override
-	public void visitarSiteEConsultarVagas() {
+	public void visitarSiteEConsultarVagas(String vagaDeInteresse) {
 		try {
 			navegador.get("https://www.vagas.com.br/");
-			navegador.findElement(By.id("q")).sendKeys("Teste");
+			navegador.findElement(By.id("q")).sendKeys(vagaDeInteresse);
 			navegador.findElement(By.id("s")).click();
 
 			aguarde.until(
@@ -44,12 +44,36 @@ public class Vagas implements ISite {
 					.forEach(div -> listaDeLinks.add(div.findElement(By.tagName("a")).getAttribute("href")));// search
 																												// result
 																												// links
-			navegador.quit();
 			return listaDeLinks;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<String> getDescricaoDasVagas() {
+		List<String> listaDeDescricao = new ArrayList<>();
+		try {
+			navegador.findElements(By.cssSelector("h2[class=\"cargo\"]"))
+					.forEach(div -> listaDeDescricao.add(div.findElement(By.tagName("a")).getText()));// search
+																										// result
+																										// links
+			return listaDeDescricao;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public String getNomeSite() {
+		return "Vagas";
+	}
+
+	@Override
+	public void enerrarSite() {
+		navegador.quit();
 	}
 
 }
