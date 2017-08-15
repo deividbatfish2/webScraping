@@ -15,6 +15,8 @@ public class main {
 
 	public static void main(String[] args) {
 
+		String vagaDesejada = "Automação Teste";
+
 		JavaMailApp email = new JavaMailApp();
 
 		List<String> listaDeSites = new ArrayList<>(
@@ -22,13 +24,13 @@ public class main {
 
 		for (String urlSite : listaDeSites) {
 			ISite site = VagasFactory.getSite(urlSite);
-			site.visitarSiteEConsultarVagas("Oracle Sql");
+			site.visitarSiteEConsultarVagas(vagaDesejada);
 
 			GeraRelatorio relatorio = RelatorioFactory.instaciaRelatorio(site);
 
 			email.setMensagem(relatorio.getRelatorio());
 		}
-		email.enviarEmail("heitor.cunha.silva@gmail.com");
+		email.enviarEmail(vagaDesejada, "deividbatfish2@gmail.com");
 	}
 
 }

@@ -22,23 +22,26 @@ public class RelatorioWeb implements GeraRelatorio {
 
 	@Override
 	public String getRelatorio() {
-		this.relatorio += this.site.getNomeSite() + "\n\n";
-		this.relatorio += "Vagas: \n";
-
 		List<String> listaDeVagas = this.site.getLinksDasVagas();
 		List<String> listaDeDescricaoVaga = this.site.getDescricaoDasVagas();
 
 		try {
-			for (int i = 0; i < listaDeVagas.size(); i++) {
-				System.out.println((i + 1) + " - " + listaDeVagas.get(i));
-				this.relatorio += (i + 1) + " - " + listaDeDescricaoVaga.get(i) + " - link: "
-						+ encurtadorLink.linkEncurtado(listaDeVagas.get(i)) + "\n";
+			if (listaDeVagas.size() > 0) {
+				this.relatorio += this.site.getNomeSite() + "\n\n";
+				this.relatorio += "Vagas: \n";
+				for (int i = 0; i < listaDeVagas.size(); i++) {
+					System.out.println((i + 1) + " - " + listaDeVagas.get(i));
+					this.relatorio += (i + 1) + " - " + listaDeDescricaoVaga.get(i) + " - link: "
+							+ encurtadorLink.linkEncurtado(listaDeVagas.get(i)) + "\n";
+
+				}
+				this.relatorio += "\n\n\n";
+				site.enerrarSite();
 			}
-			site.enerrarSite();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.relatorio += "\n\n\n";
+
 		return relatorio;
 	}
 

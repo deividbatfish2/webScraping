@@ -11,6 +11,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import util.Manipulador;
+
 public class JavaMailApp {
 
 	private Properties props;
@@ -32,11 +34,12 @@ public class JavaMailApp {
 		this.mensagem += mensagem + "\n";
 	}
 
-	public void enviarEmail(String emails) {
+	public void enviarEmail(String assunto, String emails) {
 
 		Session session = Session.getDefaultInstance(this.props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("deivid.de.assis.teixeira@gmail.com", "");
+				return new PasswordAuthentication("deivid.de.assis.teixeira@gmail.com",
+						Manipulador.getProp().getProperty("prop.googleMailKey").toString());
 			}
 		});
 
@@ -50,7 +53,7 @@ public class JavaMailApp {
 			Address[] toUser = InternetAddress // Destinatário(s)
 					.parse(emails);
 			message.setRecipients(Message.RecipientType.TO, toUser);
-			message.setSubject("Vagas coletadas");// Assunto
+			message.setSubject("Vagas coletadas _-_ " + assunto);// Assunto
 			message.setText(this.mensagem);
 			/** Método para enviar a mensagem criada */
 			Transport.send(message);
